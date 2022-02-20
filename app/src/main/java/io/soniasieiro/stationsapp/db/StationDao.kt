@@ -7,7 +7,7 @@ import io.soniasieiro.stationsapp.datamodels.Station
 @Dao
 abstract class StationDao {
 
-    @Query("SELECT * FROM stations")
+    @Query("SELECT * FROM stations ORDER BY name")
     abstract fun getAllStations(): LiveData<List<Station>>
 
     @Query("SELECT * FROM stations")

@@ -9,7 +9,7 @@ import io.soniasieiro.stationsapp.R
 import io.soniasieiro.stationsapp.datamodels.Station
 import kotlinx.android.synthetic.main.item_station.view.*
 
-class MainAdapter(private val context: Context, private val callbackItemClick: CallbackItemClick, private val callbackItemDeleted: CallbackItemDeleted, private val stationList: MutableList<Station>?) : RecyclerView.Adapter<MainAdapter.MainHolder>() {
+class MainAdapter(private val context: Context, private val callbackItemClick: CallbackItemClick, private val callbackItemDeleted: CallbackItemDeleted, private val stationList: List<Station>?) : RecyclerView.Adapter<MainAdapter.MainHolder>() {
 
     class MainHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal var view = v

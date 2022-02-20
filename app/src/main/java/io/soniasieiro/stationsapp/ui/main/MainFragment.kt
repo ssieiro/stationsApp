@@ -1,15 +1,19 @@
 package io.soniasieiro.stationsapp.ui.main
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.soniasieiro.stationsapp.R
 import io.soniasieiro.stationsapp.datamodels.Station
 import io.soniasieiro.stationsapp.utils.CustomViewModelFactory
+import io.soniasieiro.stationsapp.utils.Utils
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
@@ -40,15 +44,23 @@ class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
     }
 
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     private fun getStations() {
-        this.stations = mViewModel.getStations() as MutableList<Station>
-        mAdapter = MainAdapter(requireActivity().applicationContext, this, this, stations)
-        stationList.adapter = mAdapter
+        var firstTime = Utils.getDefaultsPreference("fistTime", this.context);
+        if (firstTime == null) {
+            mViewModel.chargeStations();
+            Utils.setDefaultsPreference("fistTime", "true", this.context)
+        }
+
+        mViewModel.getStations().observe(viewLifecycleOwner, Observer { stations ->
+            mAdapter = MainAdapter(requireActivity().applicationContext, this, this, stations)
+            stationList.adapter = mAdapter
+        })
     }
 
 

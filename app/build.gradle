@@ -59,4 +59,9 @@ dependencies {
     // Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    //Apache poi
+    implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+
+    implementation 'com.github.doyaaaaaken:kotlin-csv-jvm:1.2.0'
+
 }
