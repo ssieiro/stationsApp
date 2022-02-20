@@ -8,12 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import io.soniasieiro.stationsapp.R
 import io.soniasieiro.stationsapp.datamodels.Station
 import kotlinx.android.synthetic.main.item_station.view.*
+import java.util.*
 
-class MainAdapter(private val context: Context, private val callbackItemClick: CallbackItemClick, private val callbackItemDeleted: CallbackItemDeleted, private val stationList: List<Station>?) : RecyclerView.Adapter<MainAdapter.MainHolder>() {
+class MainAdapter(
+    private val context: Context,
+    private val callbackItemClick: CallbackItemClick,
+    private val callbackItemDeleted: CallbackItemDeleted,
+    private val stationList: MutableList<Station>?,
+    private val originalStations: List<Station>
 
+) : RecyclerView.Adapter<MainAdapter.MainHolder>() {
     class MainHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal var view = v
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val view= LayoutInflater.from(parent.context).inflate(R.layout.item_station, parent, false)
@@ -38,5 +46,22 @@ class MainAdapter(private val context: Context, private val callbackItemClick: C
 
     override fun getItemCount(): Int {
         return  stationList?.size ?: 0
+    }
+
+    fun filter(text: String) {
+        val longitud: Int = text.length
+        if (longitud == 0) {
+            stationList?.clear()
+            stationList?.addAll(originalStations)
+        } else {
+            if (stationList != null) {
+                val newStations = stationList.filter { i -> i.name!!.toLowerCase(Locale.ROOT).contains(text.toLowerCase(
+                    Locale.ROOT))
+                }
+                stationList.clear()
+                stationList.addAll(newStations)
+            }
+        }
+        notifyDataSetChanged()
     }
 }

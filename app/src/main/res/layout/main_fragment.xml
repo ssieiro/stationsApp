@@ -7,18 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment">
 
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:orientation="vertical">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/stationList"
+            android:layout_height="30dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/stationList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/lightGrey"
-
             tools:listitem="@layout/item_station" />
 
     </LinearLayout>

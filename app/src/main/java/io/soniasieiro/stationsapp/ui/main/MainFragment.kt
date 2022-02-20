@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -36,6 +37,21 @@ class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
         super.onViewCreated(view, savedInstanceState)
         init()
         getStations()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    mAdapter?.filter(query)
+                };
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                if (p0 != null) {
+                    mAdapter?.filter(p0)
+                };
+                return false
+            }
+        })
     }
 
     private fun init() {
@@ -43,8 +59,6 @@ class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
         stationList.isNestedScrollingEnabled = false
         stationList.setHasFixedSize(false)
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +74,13 @@ class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
             Utils.setDefaultsPreference("fistTime", "true", this.context)
         }
 
+
         mViewModel.getStations().observe(viewLifecycleOwner, Observer { stations ->
-            mAdapter = MainAdapter(requireActivity().applicationContext, this, this, stations)
+            var originalStations = mutableListOf<Station>()
+            originalStations.addAll(stations)
+            mAdapter = MainAdapter(requireActivity().applicationContext, this, this,
+                stations as MutableList<Station>?, originalStations
+            )
             stationList.adapter = mAdapter
         })
     }
@@ -72,15 +91,13 @@ class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage("com.google.android.apps.maps")
         startActivity(mapIntent)
-       /* val labelLocation = station.name
-        val uri =
-            "geo:<" + station.lat + ">,<" + station.lon + ">?q=<" + station.lat + ">,<" + station.lon + ">(" + labelLocation + ")"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        startActivity(intent)*/
     }
 
     override fun onItemDeleted(station: Station) {
         TODO("Not yet implemented")
     }
 
+
+
 }
+
