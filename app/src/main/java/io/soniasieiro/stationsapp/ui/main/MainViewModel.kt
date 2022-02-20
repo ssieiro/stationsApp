@@ -74,9 +74,7 @@ class MainViewModel(private val context: Application) : ViewModel() {
     }
 
     fun getStations() : LiveData<List<Station>> {
-
         var stations = StationRoomDatabase.getInstance(context).stationDao().getAllStations()
-
         return stations
     }
 

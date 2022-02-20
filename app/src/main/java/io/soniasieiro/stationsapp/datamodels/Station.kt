@@ -19,9 +19,9 @@ data class Station(
     val lat: String? = "",
 
     @field:SerializedName("lon")
-    val lom: String? = "",
+    val lon: String? = "",
 
     @field:SerializedName("adress")
     val adress: String? = "",
 
-) : Serializable
+    ) : Serializable

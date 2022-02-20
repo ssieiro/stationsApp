@@ -1,20 +1,21 @@
 package io.soniasieiro.stationsapp.ui.main
 
-import android.content.SharedPreferences
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.soniasieiro.stationsapp.R
 import io.soniasieiro.stationsapp.datamodels.Station
 import io.soniasieiro.stationsapp.utils.CustomViewModelFactory
 import io.soniasieiro.stationsapp.utils.Utils
 import kotlinx.android.synthetic.main.main_fragment.*
+
 
 class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
 
@@ -45,8 +46,10 @@ class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
 
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
@@ -65,7 +68,15 @@ class MainFragment : Fragment(), CallbackItemClick, CallbackItemDeleted {
 
 
     override fun onItemClick(station: Station) {
-        TODO("Not yet implemented")
+        val gmmIntentUri = Uri.parse("geo:" + station.lat + "," + station.lon + "?q=" + station.lat + "," + station.lon + "(" + station.name + ")")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
+       /* val labelLocation = station.name
+        val uri =
+            "geo:<" + station.lat + ">,<" + station.lon + ">?q=<" + station.lat + ">,<" + station.lon + ">(" + labelLocation + ")"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        startActivity(intent)*/
     }
 
     override fun onItemDeleted(station: Station) {
